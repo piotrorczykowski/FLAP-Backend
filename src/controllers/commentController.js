@@ -28,8 +28,8 @@ async function readAll(req, res) {
 
 async function update(req, res) {
     //  Check if id exists
-    const id = req.params.id
-    if(!id)
+    const commentId = req.params.id
+    if(!commentId)
     {
         return res.status(400).json({ message: 'Missing comment id!' })
     }
@@ -40,10 +40,10 @@ async function update(req, res) {
         return res.status(400).json({ message: 'Not all parameters are given!' })
     }
     
-    //  Try to update comment of _id == id
+    //  Try to update comment of _id == commentId
     try {
-        await commentService.updateComment(id, body, countOfPluses, countOfMinuses)
-        return res.sendStatus(204)
+        const comment = await commentService.updateComment(commentId, body, countOfPluses, countOfMinuses)
+        return res.status(201).send(comment)
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }
@@ -51,14 +51,14 @@ async function update(req, res) {
 
 async function remove(req, res) {
     //  Check if id exists
-    const id = req.params.id
-    if (!id) {
+    const commentId = req.params.id
+    if (!commentId) {
         return res.status(400).json({ message: 'Missing comment id!' })
     }
 
-    //  Try to delete comment of _id == id
+    //  Try to delete comment of _id == commentId
     try {
-        await commentService.deleteComment(id)
+        await commentService.deleteComment(commentId)
         return res.sendStatus(204)
     } catch (err) {
         return res.status(500).json({ message: err.message })
