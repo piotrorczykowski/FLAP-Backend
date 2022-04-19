@@ -1,20 +1,21 @@
 const express = require('express')
 const router = express.Router()
 const postController = require('../controllers/postController')
+const verifyToken = require('../middlewares/jwtMiddleware')
 
 /*  GET all posts  */
-router.get('/posts', postController.readAll)
+router.get('/posts', verifyToken, postController.readAll)
 
 /*  GET one post    */
-router.get('/posts/:id', postController.read)
+router.get('/posts/:id', verifyToken, postController.read)
 
 /*  POST post   */
-router.post('/posts', postController.create)
+router.post('/posts', verifyToken, postController.create)
 
 /*  DELETE post   */
-router.delete('/posts/:id', postController.remove)
+router.delete('/posts/:id', verifyToken, postController.remove)
 
 /*  PUT post    */
-router.put('/posts/:id', postController.update)
+router.put('/posts/:id', verifyToken, postController.update)
 
 module.exports = router
