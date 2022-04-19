@@ -1,17 +1,18 @@
 const express = require('express')
 const router = express.Router()
 const commentController = require('../controllers/commentController')
+const verifyToken = require('../middlewares/jwtMiddleware')
 
 /*  POST comment    */
-router.post('/comments', commentController.create)
+router.post('/comments', verifyToken, commentController.create)
 
 /*  GET all comments    */
-router.get('/comments', commentController.readAll)
+router.get('/comments', verifyToken, commentController.readAll)
 
 /*  PUT comment  */
-router.put('/comments/:id', commentController.update)
+router.put('/comments/:id', verifyToken, commentController.update)
 
 /*  DELETE comment  */
-router.delete('/comments/:id', commentController.remove)
+router.delete('/comments/:id', verifyToken, commentController.remove)
 
 module.exports = router
