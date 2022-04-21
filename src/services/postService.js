@@ -1,4 +1,26 @@
 const Post = require('../models/postModel')
+const User = require('../models/userModel')
+
+async function createPost(userId, body) {
+    try {
+        //  Check if user of _id == userId exists
+        const result = await User.findOne({ _id: userId })
+        if(!result) {
+            throw new Error('User doesn\'t exists!')
+        }
+
+        //  Create new post
+        const newPost = new Post({
+            userId,
+            body,
+        })
+
+        //  Save post and then return saved post
+        return await newPost.save()
+    } catch (err) {
+        throw err
+    }
+}
 
 async function getPost(postId) {
     try {
@@ -13,21 +35,6 @@ async function getPosts() {
     try {
         //  Return all posts
         return await Post.find({})
-    } catch (err) {
-        throw err
-    }
-}
-
-async function createPost(userId, body) {
-    try {
-        //  Create new post
-        const newPost = new Post({
-            userId,
-            body,
-        })
-
-        //  Save post and then return saved post
-        return await newPost.save()
     } catch (err) {
         throw err
     }
