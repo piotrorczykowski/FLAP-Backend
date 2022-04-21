@@ -33,7 +33,7 @@ async function createPost(userId, body) {
     }
 }
 
-async function updatePost(postId, body, countOfPluses, countOfMinuses, countOfComments) {
+async function updatePost(postId, userId, body, countOfPluses, countOfMinuses, countOfComments) {
     try {
         //  Check if parameter are valid
         if(countOfPluses < 0 || countOfMinuses < 0 || countOfComments < 0) {
@@ -42,6 +42,11 @@ async function updatePost(postId, body, countOfPluses, countOfMinuses, countOfCo
 
         //  Find post of _id == postId
         const post = await Post.findOne({ _id: postId })
+
+        //  Check if user is owner of the post
+        if(post.userId != userId) {
+            throw new Error('User doesn\'t have permission to update post!')
+        }
 
         post.body = body
         post.countOfPluses = countOfPluses
@@ -55,8 +60,16 @@ async function updatePost(postId, body, countOfPluses, countOfMinuses, countOfCo
     }
 }
 
-async function deletePost(postId) {
+async function deletePost(postId, userId) {
     try {
+        //  Find post of _id == postId
+        const post = await Post.findOne({ _id: postId })
+
+        //  Check if user is owner of the post
+        if(post.userId != userId) {
+            throw new Error('User doesn\'t have permission to update post!')
+        }
+
         //  Delete post of _id == postId
         await Post.deleteOne({ _id: postId })
     } catch (err) {
