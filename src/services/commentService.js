@@ -1,7 +1,19 @@
 const Comment = require('../models/commentModel')
+const User = require('../models/userModel')
+const Post = require('../models/postModel')
 
-async function createComment(postId, userId, body) {
+async function createComment(userId, postId, body) {
     try {
+        //  Check if user of _id == userId exists
+        if(!await User.findOne({ _id: userId })) {
+            throw new Error('User doesn\'t exists!')
+        }
+
+        //  Check if post of _id == postId exists
+        if(!await Post.findOne({ _id: postId })) {
+            throw new Error('Post doesn\'t exists!')
+        }
+
         //  Create new comment
         const newComment = new Comment({
             userId,
