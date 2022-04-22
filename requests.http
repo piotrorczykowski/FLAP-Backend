@@ -1,0 +1,120 @@
+@hostname = http://localhost
+@port = 5000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+### Post signUp
+POST {{ host }}/signup
+Content-Type: {{ contentType }}
+
+{
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "smith@gmail.com",
+    "password": "1234"
+}
+
+### Post signIn
+# @name login
+POST {{ host }}/signin
+Content-Type: {{ contentType }}
+
+{
+    "email": "smith@gmail.com",
+    "password": "1234"
+}
+
+### Set tokens automatically
+@authToken = {{ login.response.body.accessToken }}
+@refreshToken = {{ login.response.body.refreshToken }}
+
+### Get authorization
+GET {{ host }}/auth
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+### Post new token
+POST {{ host }}/refreshToken
+Content-Type: {{ contentType }}
+Authorization: token {{ refreshToken }}
+
+### Post post
+POST {{ host }}/posts
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+{
+    "userId": "6261b44eb7c402971cb74d97",
+    "body": "test message"
+}
+
+### Get posts
+GET {{ host }}/posts
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+### Get post
+GET {{ host }}/posts/625f13509694256bd17628b0
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+### Put post
+PUT  {{ host }}/posts/625f13509694256bd17628b0
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+{
+        "userId": "6257ef73a848e921b65d1cd5",
+        "body": "test message!",
+        "countOfPluses": 2,
+        "countOfMinuses": 7,
+        "countOfComments": 60
+}
+
+### Delete post
+DELETE  {{ host }}/posts/62619f94b7c402971cb74d75
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+{
+    "userId": "625983f54b184ba63d82aaa9"
+}
+
+### Post comment
+POST {{ host }}/comments
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+{
+    "userId": "625983f54b184ba63d82aaa9",
+    "postId": "625f13509694256bd17628b0",
+    "body": "test message"
+}
+
+### Get comments
+GET {{ host }}/comments
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+### Put comment
+PUT  {{ host }}/comments/626129224926c6dce16ecd4d
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+{
+        "userId": "6258273df1fd97ef8f1dc09a",
+        "body": "test message",
+        "countOfPluses": 20,
+        "countOfMinuses": 0
+}
+
+### Delete comment
+DELETE  {{ host }}/comments/6261ab71b7c402971cb74d80
+Content-Type: {{ contentType }}
+Authorization: token {{ authToken }}
+
+{
+    "userId": "625983f54b184ba63d82aaa9"
+}
+
+###
