@@ -42,7 +42,9 @@ async function logIn(email, password) {
             const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '1h', })
             const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET)
 
-            return { accessToken, refreshToken }
+            const userId = user._id
+
+            return { accessToken, refreshToken, userId }
         } else {
             throw new Error('Incorrect password!')
         }

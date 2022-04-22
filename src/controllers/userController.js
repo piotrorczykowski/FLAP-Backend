@@ -25,8 +25,8 @@ async function signIn(req, res) {
     
     //  Try to sign in
     try {
-        const { accessToken, refreshToken } = await userService.logIn(email, password)
-        return res.status(200).json({ accessToken, refreshToken  })
+        const { accessToken, refreshToken, userId } = await userService.logIn(email, password)
+        return res.status(200).json({ accessToken, refreshToken, userId })
     } catch (err)  {
         return res.status(500).json({ message: err.message })
     }
